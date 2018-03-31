@@ -28,10 +28,14 @@ public class HelloServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String yourName = request.getParameter("yourName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password1");
+		
 		PrintWriter writer = response.getWriter();
-		writer.println("<h1>Hello " + yourName + "</h1>");
+		writer.println("<h1>Hello " + email +" "+ password+ "</h1>");
 		writer.close();
+		
+	}
 	}
 
-}
+
