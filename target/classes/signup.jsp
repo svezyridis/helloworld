@@ -39,8 +39,16 @@
         	
         	<form class="" method="post" action="register">
         		
-        		<div class="row email">
+        		<div class="row username">
 	    			<input type="text" id="username" name="username" placeholder="username" />
+        		</div>
+        		
+        		<div class="row Name">
+	    			<input type="text" id="Name" name="Name" placeholder="Name" />
+        		</div>
+        		
+        		<div class="row nickname">
+	    			<input type="text" id="nickname" name="nickname" placeholder="nickname" />
         		</div>
         		
         		<div class="row pass">
@@ -71,7 +79,8 @@
         <!-- JavaScript includes - jQuery, the complexify plugin and our own script.js -->
 		 
 		 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-		 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/login.js"></script>i
+		  <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/loginscript.js"></script> 
+		
 
 		     
     </body>

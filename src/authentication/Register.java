@@ -46,8 +46,10 @@ public class Register extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
-		String email = request.getParameter("email");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password1");
+		String name = request.getParameter("Name");
+		String nickname = request.getParameter("nickname");
 		String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
 	
 		try{
@@ -61,11 +63,13 @@ public class Register extends HttpServlet {
 		      //STEP 4: Execute a query
 		      System.out.println("Inserting records into the table...");
 		  	String insertString = "INSERT INTO USERS"
-					+ "(EMAIL,PASSWORD) VALUES"
-					+ "(?,?)";
+					+ "(USERNAME,PASSWORD,NAME,NICKNAME) VALUES"
+					+ "(?,?,?,?)";
 		      stmt = conn.prepareStatement(insertString);
-		      stmt.setString(1, email);
+		      stmt.setString(1, username);
 		      stmt.setString(2, hashed);
+		      stmt.setString(3, name);
+		      stmt.setString(4, nickname);
 		      stmt.executeUpdate();
 		      System.out.println("Inserted records into the table...");
 		      response.setContentType("text/html;charset=UTF-8");
@@ -79,7 +83,7 @@ public class Register extends HttpServlet {
 		      //TODO duplicate entry message
 		      if (se.getErrorCode()==1062) {
 		    	  response.setContentType("text/html;charset=UTF-8");
-					session.setAttribute("flash", "User with the same email allready exists");
+					session.setAttribute("flash", "User with the same username allready exists");
 					response.sendRedirect("signup.jsp");
 					return;
 		      }

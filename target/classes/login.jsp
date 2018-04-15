@@ -25,7 +25,7 @@
    	<form class="" method="post" action="helloServlet">
         		
         		<div class="row email">
-	    			<input type="text" id="email" name="email" placeholder="Email" />
+	    			<input type="text" id="email" name="username" placeholder="username" />
         		</div>
         		
         		<div class="row pass">
