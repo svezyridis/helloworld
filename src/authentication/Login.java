@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import crypto.Encryption;
 
@@ -34,71 +35,17 @@ public class Login extends HttpServlet {
 		return "SKAUTH2";
 	}
 	private static final long serialVersionUID = 1L;
-	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	 static final String DB_URL = "jdbc:mysql://localhost/USERS";
+	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";    
+	    static final String DB_URL = Database.getURL();
 
 	    //  Database credentials
-	 static final String USER = "savvas";
-	 static final String PASS = "root";
+	    static final String USER = Database.getUsername();
+	    static final String PASS = Database.getPassword();
 	
 	Connection conn=null;
 	PreparedStatement stmt=null;
 	
-	public  Map getSystem(String id) {
-		
-		String identifier = null;
-		String keybase64 = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
 
-		      //STEP 3: Open a connection
-		      System.out.println("Connecting to a selected database...");
-		      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-		      System.out.println("Connected database successfully...");
-		     
-		  	String sqlString = "SELECT IDENTIFIER, KEYBASE64 FROM SERVICES" +
-	                " WHERE IDENTIFIER = ? ";
-		      stmt = conn.prepareStatement(sqlString);
-		      stmt.setString(1, id);
-		      ResultSet rs = stmt.executeQuery(sqlString);
-		      while (rs.next()) {
-		    		 identifier = rs.getString("IDENTIFIER");
-		    		 keybase64 = rs.getString("KEYBASE64");	
-		    	}
-		   }catch(SQLException se){
-			      //Handle errors for JDBC
-			      se.printStackTrace();
-			      //TODO duplicate entry message
-			    
-			   }catch(Exception e){
-			      //Handle errors for Class.forName
-			      e.printStackTrace();
-			   }finally{
-			      //finally block used to close resources
-			      try{
-			         if(stmt!=null)
-			            conn.close();
-			      }catch(SQLException se){
-			      }// do nothing
-			      try{
-			         if(conn!=null)
-			            conn.close();
-			      }catch(SQLException se){
-			         se.printStackTrace();
-			      }//end finally try
-			      
-			   }//end try
-	      		
-		Map<String,String> system = null;
-
-		system = new HashMap<String,String>();
-		system.put("identifier",identifier );
-		system.put("keybase64", keybase64);
-		if (identifier!=null) {
-			return system;
-		}
-		return null;
-	}
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -132,6 +79,7 @@ public class Login extends HttpServlet {
 				String systemIdentifier = request.getParameter("system");
 				String username = request.getParameter("username");
 				String password = request.getParameter("password");
+				String callback = request.getParameter("callback");
 				
 
 				// TODO handle missing system, username or password
@@ -142,7 +90,7 @@ public class Login extends HttpServlet {
 					return;
 				}
 				
-				Map system = this.getSystem(systemIdentifier);
+				Map system = Systems.getSystem(systemIdentifier);
 				if (system == null) {
 					response.setContentType("text/html;charset=UTF-8");
 					session.setAttribute("flash", "Unknown system");
@@ -160,7 +108,6 @@ public class Login extends HttpServlet {
 				
 				
 				JSONObject dataJsonObj = new JSONObject();
-				out.println("creating jsosssn \n");
 				
 				dataJsonObj.put("AUTHID", this.getMyIdentifier());
 				dataJsonObj.put("SID", systemIdentifier);
@@ -169,7 +116,6 @@ public class Login extends HttpServlet {
 				JSONObject usermeta = new JSONObject();
 				usermeta.put("name", userData.get("name").toString()) ;
 				usermeta.put("nick", userData.get("nick").toString()) ;
-				usermeta.put("email", userData.get("email").toString()) ;
 				dataJsonObj.put("usermeta", usermeta);
 
 				String sharedKeyBase64 = system.get("keybase64").toString(); 
@@ -193,36 +139,11 @@ public class Login extends HttpServlet {
 					response.setContentType("text/plain;charset=UTF-8");
 					out.println(finalResponse);
 				}
-				else {
-					if (redirectmethod.equals("NONE")) {
-						response.setContentType("text/plain;charset=UTF-8");
-						out.println(finalResponse);
-						out.println("\n");
-						out.println("Would redirect to "+callback);
-					}
-					if (redirectmethod.equals("GET")) {
+				else {		
 						response.setContentType("text/plain;charset=UTF-8");
 						String url = callback+"?token="+URLEncoder.encode(finalResponse,"UTF-8");
 						response.sendRedirect(url);
 						return;
-					}
-					if (redirectmethod.equals("POST")) {
-						response.setContentType("text/html;charset=UTF-8");
-						
-						out.println("	<html>");
-						out.println("		<body>");
-						out.println("			<form action='"+callback+"' method='POST' name='callbackform'>");
-						out.println("			<input type='hidden' name='token' value='"+token+"'>");
-						out.println("			</form>");
-						out.println("			<script>");
-						out.println("				window.onload = function(){");
-						out.println("				  document.forms['callbackform'].submit();");
-						out.println("				}");
-						out.println("			</script>");
-						out.println("		</body>");
-						out.println("	</html>");
-						
-					}
 				}
 				
 			} 
@@ -244,14 +165,13 @@ public class Login extends HttpServlet {
 		}
 		
 		public Map validateUser(String username, String password) {
-			Map userData = this.getUser(username);
+			Map userData = Validation.getUser(username);
 			if (userData == null) {
 				return null;
 			}
 			
 			String pwdhash = userData.get("pwdhash").toString();
-			//if (BCrypt.checkpw(password, pwdhash)) {
-			if(true) {
+			if (BCrypt.checkpw(password, pwdhash)) {
 				userData.remove("pwdhash");
 				return userData;
 			}

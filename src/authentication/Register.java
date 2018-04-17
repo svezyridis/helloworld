@@ -18,8 +18,6 @@ import java.sql.*;
 @WebServlet("/register")
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String username= "savvas";
-	private final String password= "root";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,12 +31,12 @@ public class Register extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-    static final String DB_URL = "jdbc:mysql://localhost/USERS";
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";    
+    static final String DB_URL = Database.getURL();
 
     //  Database credentials
-    static final String USER = "savvas";
-    static final String PASS = "root";
+    static final String USER = Database.getUsername();
+    static final String PASS = Database.getPassword();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn=null;

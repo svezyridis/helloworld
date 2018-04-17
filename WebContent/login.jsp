@@ -23,13 +23,33 @@
 		}
 		%>
    	<form class="" method="post" action="helloServlet">
+   	
+   	<%
+		String callback = request.getParameter("callback");
+		String system = request.getParameter("system");
+		
+		if (callback != null && callback != "") {
+			%>
+			<input type="hidden" name="callback" value="<%=callback%>">
+			<%
+		}
+		%>
+	
+	<%
+		if (system != null && system != "") {
+					%>
+				<input type="hidden" name="system" value="<%=system%>">
+				<%=system%>
+				 <%
+					}
+					%>
         		
-        		<div class="row email">
-	    			<input type="text" id="email" name="username" placeholder="username" />
+        		<div class="row username">
+	    			<input type="text" id="username" name="username" placeholder="username" />
         		</div>
         		
         		<div class="row pass">
-        			<input type="password" id="password1" name="password1" placeholder="Password" />
+        			<input type="password" id="password" name="password" placeholder="Password" />
         		</div>
         		
         	
