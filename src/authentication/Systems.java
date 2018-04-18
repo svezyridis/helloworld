@@ -11,7 +11,7 @@ public class Systems {
 		Map<String,String> system = null;
 
 		system = new HashMap<String,String>();
-		system.put("identifier", "SKSYSTEM2");
+		system.put("identifier", "SYSTEM");
 		system.put("keybase64", "7vjTsO0IhSZsNA6ze37Dk/xXw2nphFM9ZAMUkwXgaAA=");
 		if (id.equals(system.get("identifier").toString())) {
 		return system;

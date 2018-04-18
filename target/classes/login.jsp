@@ -22,11 +22,11 @@
 			session.removeAttribute("flash");
 		}
 		%>
-   	<form class="" method="post" action="helloServlet">
+   	<form class="" method="post" action="login">
    	
    	<%
 		String callback = request.getParameter("callback");
-		String system = request.getParameter("system");
+		String system = "SYSTEM";
 		
 		if (callback != null && callback != "") {
 			%>
@@ -34,16 +34,9 @@
 			<%
 		}
 		%>
-	
-	<%
-		if (system != null && system != "") {
-					%>
-				<input type="hidden" name="system" value="<%=system%>">
-				<%=system%>
-				 <%
-					}
-					%>
-        		
+        		<select name="system">
+        			<option>SYSTEM</option>
+        		</select>
         		<div class="row username">
 	    			<input type="text" id="username" name="username" placeholder="username" />
         		</div>

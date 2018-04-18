@@ -34,7 +34,7 @@ public class ApiAuthentication extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     public static String getMyIdentifier() {
-		return "SKAUTH2";
+		return "APIAUTH";
 	}
     
 
@@ -59,7 +59,7 @@ HttpSession session = request.getSession();
 
 				// TODO handle missing system, username or password
 				if (systemIdentifier == null || username == null || password == null || systemIdentifier.equals("") || username.equals("") || password.equals("") ) {
-					String error="Missing username system or password";
+					String error="Missing system, username or password";
 					JSONObject resJSON = new JSONObject();
 					resJSON.put("error", error);			
 					JSONObject dataJSON = new JSONObject();		

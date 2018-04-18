@@ -78,7 +78,7 @@
         
         <!-- JavaScript includes - jQuery, the complexify plugin and our own script.js -->
 		 
-		 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		 <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
 		  <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/loginscript.js"></script> 
 		
 

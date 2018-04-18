@@ -98,7 +98,7 @@ public class Login extends HttpServlet {
 					return;
 				}
 				
-				Map userData = this.validateUser(username, password);
+				Map userData = Validation.validateUser(username, password);
 				if (userData == null) {
 					response.setContentType("text/html;charset=UTF-8");
 					session.setAttribute("flash", "Wrong username or password");
@@ -137,7 +137,8 @@ public class Login extends HttpServlet {
 			
 				if (callback == null || callback.equals("")) {
 					response.setContentType("text/plain;charset=UTF-8");
-					out.println(finalResponse);
+					String url = "login.jsp"+"?token="+URLEncoder.encode(finalResponse,"UTF-8");
+					response.sendRedirect(url);;
 				}
 				else {		
 						response.setContentType("text/plain;charset=UTF-8");
@@ -163,23 +164,7 @@ public class Login extends HttpServlet {
 				out.close();  // Always close the output writer
 			}
 		}
-		
-		public Map validateUser(String username, String password) {
-			Map userData = Validation.getUser(username);
-			if (userData == null) {
-				return null;
-			}
-			
-			String pwdhash = userData.get("pwdhash").toString();
-			if (BCrypt.checkpw(password, pwdhash)) {
-				userData.remove("pwdhash");
-				return userData;
-			}
-			
-			return null;
-
-		}
-		
+				
 	}
 
 

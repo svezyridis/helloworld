@@ -15,7 +15,7 @@
 
 
 html{
-	background:url('http://i34.tinypic.com/m922bk.jpg') repeat center top #826e79;
+	background:url('../images/background.jpg') repeat center top #826e79;
 }
 
 
@@ -65,7 +65,7 @@ h1{
 #main form{
 	width:440px;
 	height:450px;
-	background:url('http://i33.tinypic.com/24eng8x.png') no-repeat;
+	background:url('../images/box.png') no-repeat;
 	padding-top: 50px;
 }
 
@@ -199,7 +199,7 @@ h1{
 
 
 #main form .arrow{
-    background: url("http://i33.tinypic.com/14txydw.jpg") no-repeat -10px 0;
+    background: url("../images/arrow.jpg") no-repeat -10px 0;
     height: 120px;
     left: 214px;
     position: absolute;
@@ -224,7 +224,7 @@ h1{
 }
 
 #main form .arrowCap{
-	background: url("http://i33.tinypic.com/14txydw.jpg") no-repeat -43px 0;
+	background: url("../images/arrow.jpg") no-repeat -43px 0;
 	height: 20px;
 	left: 208px;
 	position: absolute;
